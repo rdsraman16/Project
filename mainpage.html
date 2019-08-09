@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Automation</title>
+    <meta name="description" content="">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+</head>
+<body width="100%">
+    <div display = "flex" flex-wrap = wrap>
+        <input class= "radioStyle" type="radio" id = "radio1" name="Provisioning" value="precheck"> Precheck </input>     
+        <input class= "radioStyle" type="radio" id = "radio2" name="Provisioning" value="check"> MPLS </input> 
+        <input class= "radioStyle" type="radio" id = "radio3" name="Provisioning" value="postcheck"> Postcheck </input>
+    </div>
+    <div>
+        <form id="form1" style="visibility: hidden">
+            <select id="select1" name="routers">
+                <option>Select</option>
+                <option class="peRouter" id="PE1" value="10.10.10.1">PE1</option>
+                <option class="ceRouter" id="P" value="10.10.10.2">P</option>
+                <option class="peRouter" id="PE2" value="10.10.10.3">PE2</option>
+                <option class="ceRouter" id="CE1" value="10.10.10.4">CE1</option>
+                <option class="ceRouter" id="CE2" value="10.10.10.5">CE2</option>
+            </select>
+        </form>
+     
+        <input id="submit" type="button" value="Submit">
+        
+        <form class="textStyle" style="visibility: hidden">
+            <input type="text" id="text1"> Enter the OSPF ID </input>
+            <input type="text" id="text2"> Enter the OSPF area </input>
+            <input type="text" id="text3"> Enter the BGP process Id </input>
+            <input type="text" id="text4"> Enter the export RT </input>
+            <input type="text" id="text5"> Enter the import RT </input>
+            <input type="text" id="text6"> Enter the valur of RD </input>
+        </form>
+        <form class="textStyle1" style="visibility: hidden">
+            <input type="text" id="text11"> Enter the OSPF ID </input>
+            <input type="text" id="text12"> Enter the OSPF area </input>
+
+        </form>
+    </div>
+</body>
+<script>
+
+const radioElem=document.querySelectorAll('.radioStyle');
+// var raman=document.getElementById('radio1').value
+// console.log(raman)
+
+for (let i = 0; i < radioElem.length; i++) {
+    const individual = radioElem[i];
+    individual.addEventListener('click',show);
+    
+}
+
+    document.querySelector('#submit').addEventListener('click',peRouterShow);
+//document.querySelector('.textStyle1').addEventListener('click',ceRouterShow);
+
+function show() {
+                const showElement =document.getElementById('form1');               
+                
+                showElement.style.visibility = "visible";                 
+                }
+
+    function peRouterShow() {
+                //const showElement =document.getElementById('select1');
+                const peElem=document.querySelectorAll('option');
+
+for (let i = 0; i < peElem.length; i++) {
+    const individual = peElem[i];
+    if(document.getElementById('radio2').checked){
+    if(individual.selected){
+    const showConf =document.querySelector('.textStyle');
+    const showConfCe =document.querySelector('.textStyle1');
+    if (individual.className == 'peRouter') {
+                showConf.style.visibility = 'visible' ;   
+                showConfCe.style.visibility = 'hidden';
+                
+    }
+    else if(individual.className == 'ceRouter'){              
+        showConfCe.style.visibility = 'visible';
+                showConf.style.visibility = 'hidden';
+    }
+}
+}
+}
+
+// function check() {
+//     if(document.getElementById("red").checked = true);
+// }
+
+
+var radios = document.getElementsByClassName('radioStyle');
+var valueOfRadioButton;
+for (var i = 0; i < radios.length; i++) {
+    if (radios[i].type === 'radio' && radios[i].checked) {
+        // get value, set checked flag or do whatever you need to
+        valueOfRadioButton = radios[i].value; 
+        //console.log(valueOfRadioButton)      
+    }
+}
+
+
+
+        var formData = {            
+            'radioSel': valueOfRadioButton,
+            // 'check': $("#radio2").val(),
+            // 'postcheck': $("#radio3").val(),
+            'ip': $("#select1").val(),  
+            'ospfID': $("#text1").val(),
+            'ospfArea': $("#text2").val(),
+            'bgpID': $("#text3").val(),
+            'expRT': $("#text4").val(),
+            'impRT': $("#text5").val(),
+            'RD': $("#text6").val(),
+            'ospfID1': $("#text11").val(),
+            'ospfArea1': $("#text12").val()
+        };
+
+         //console.log(formData)
+        // console.log(formData.ip)
+        // console.log(formData.ospfArea)
+        // console.log(formData.ospfID)
+        // console.log(formData.bgpID)
+        
+        // process the form
+        $.ajax({
+            type: 'POST', 
+            url: 'http://localhost/cgi-bin/Network.py',          
+            //data: JSON.stringify(formData)
+            data :formData          
+        })
+           
+       .done(function (data) {             
+                alert(data);   
+            });
+
+       
+    
+
+}
+</script>
+</html>
+
+
