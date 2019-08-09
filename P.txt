@@ -1,0 +1,21 @@
+
+interface Loopback1
+ ip address 192.168.1.2 255.255.255.0
+
+interface Ethernet0/0
+ ip address 192.168.3.1 255.255.255.0
+ mpls ip
+
+interface Ethernet0/1
+ ip address 192.168.4.2 255.255.255.0
+ mpls ip
+
+interface Ethernet0/2
+ ip address 10.10.10.2 255.255.255.0
+
+
+router ospf ${ospfID}
+ network 192.168.1.2 0.0.0.0 area ${area}
+ network 192.168.3.0 0.0.0.255 area ${area}
+ network 192.168.4.0 0.0.0.255 area ${area}
+
