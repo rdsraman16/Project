@@ -47,7 +47,7 @@ def precheck():
         'username': 'aditi',
         'password': 'aditi',
         'port': 22,
-        'secret': 'aditi',  # this is the enable password
+        'secret': 'aditi',  # this is the enable secret password
         'verbose': True
     }
     device_list.append(cisco_device)
